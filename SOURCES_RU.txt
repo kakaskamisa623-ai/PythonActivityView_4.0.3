@@ -1,0 +1,93 @@
+ИСТОЧНИКИ И ТЕХНИЧЕСКИЕ СПРАВКИ
+================================
+
+Microsoft Learn — Sysmon:
+https://learn.microsoft.com/sysinternals/downloads/sysmon
+Описание событий Sysmon, в том числе Process Create (1), Process Terminate (5), Image Load (7),
+FileCreate (11), Registry (12–14), DNS Query (22) и др. Фактически собираемые события
+зависят от конфигурации Sysmon.
+
+Microsoft Learn — событие Windows 4688:
+https://learn.microsoft.com/windows/security/threat-protection/auditing/event-4688
+Создание процесса. Поле командной строки зависит от настройки аудита командной строки.
+
+Microsoft Learn — событие Windows 4663:
+https://learn.microsoft.com/windows/security/threat-protection/auditing/event-4663
+Доступ к объекту. Событие требует заранее настроенного аудита доступа и подходящих SACL.
+
+Microsoft Learn — PowerShell logging:
+https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_logging
+Сведения о Module Logging, Script Block Logging и других журналах PowerShell.
+
+Microsoft Learn — Get-ScheduledTask:
+https://learn.microsoft.com/powershell/module/scheduledtasks/get-scheduledtask
+Документация по чтению текущих определений задач планировщика Windows.
+
+Microsoft Learn — Get-ScheduledTaskInfo:
+https://learn.microsoft.com/powershell/module/scheduledtasks/get-scheduledtaskinfo
+Документация по текущей информации о запуске задачи.
+
+Microsoft Learn — Win32_Service:
+https://learn.microsoft.com/windows/win32/cimwin32prov/win32-service
+Метаданные служб Windows.
+
+Важно: ссылки описывают механизмы Windows. Они не гарантируют, что соответствующий
+журнал включён или содержит события на проверяемом ПК.
+
+Microsoft Learn — auditpol: аудит политики Windows
+https://learn.microsoft.com/windows-server/administration/windows-commands/auditpol
+Используется для read-only проверки текущего состояния подкатегорий аудита.
+
+Microsoft Learn — wevtutil: управление и экспорт журналов событий
+https://learn.microsoft.com/windows-server/administration/windows-commands/wevtutil
+Команда wevtutil gl читает конфигурацию канала; wevtutil epl экспортирует копию журнала
+в EVTX без очистки исходного канала. Экспорт может требовать повышенных прав.
+
+Python documentation — datetime: aware and naive objects
+https://docs.python.org/3/library/datetime.html
+Исходные отметки без часового смещения сохраняются отдельно; перевод в UTC помечается как
+предположение по локальной временной зоне системы.
+
+
+ЛОКАЛЬНЫЕ МОДУЛИ ПРОЕКТА 4.0.0
+------------------------------
+- PythonActivityView.py / PythonActivityView.pyw — GUI, сканирование, хронология и экспорт.
+- pav_browser.py — read-only разбор SQLite истории Chromium/Firefox и пользовательские
+  категории доменов. Чтение выполняется из временной backup-копии.
+- pav_runtime.py — нормализация Python/Java start/end записей, анализ Parent PID/ProcessGuid,
+  временных перекрытий, браузерных корреляций и объяснимая эвристическая оценка.
+- forensic_review.py — расширенное чтение Windows Event Logs, Sysmon, задач/служб и других
+  системных источников с указанными в README ограничениями.
+- pav_330.py — расширенный read-only forensic слой и встроенный PE/DLL static parser:
+  EVTX, статические файлы, Prefetch, Amcache/SRUM офлайн, LNK/Jump Lists, heatmap
+  и группировка независимых источников.
+- pav_encoding.py — декодирование Unicode/legacy Windows text и PEP 263 Python source.
+- pav_plugins.py — реестр пользовательских плагинов с обнаружением без выполнения и отдельным
+  API явной загрузки.
+- pav_casebook.py — локальные дела, реестр файлов-доказательств, SHA-256, цепочка аудита,
+  безопасный импорт/экспорт переносимых .pavcase пакетов.
+- pav_search.py — Unicode-aware глобальный поиск по уже загруженным данным и сравнение файлов.
+- pav_exports.py — дополнительный PDF-отчёт с ReportLab и локальным Unicode-шрифтом.
+- pav_diagnostics.py — read-only диагностика платформы, Python/Tk и необязательных модулей.
+- example_readonly_plugin.py — безопасный read-only пример плагина.
+- pav_v30.py и pav_features_250.py — сохранённые механизмы анализа и поддержки версий 3.0/2.5.
+- test_pav250.py, test_pav300.py, test_pav310.py, test_pav320.py, test_pav330.py, test_pav340.py, test_pav400.py — регрессионные тесты версий 2.5–4.0.
+
+Python documentation — sqlite3.Connection.backup:
+https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection.backup
+Используется для чтения согласованной временной копии SQLite без открытия исходной базы
+на запись приложением.
+
+ВНЕШНИЕ НЕОБЯЗАТЕЛЬНЫЕ ПАРСЕРЫ
+------------------------------------
+python-evtx — EVTX parser: https://pypi.org/project/python-evtx/
+python-registry — offline Windows registry hives: https://pypi.org/project/python-registry/
+LnkParse3 — Windows LNK parser: https://pypi.org/project/LnkParse3/
+Dissect Target Prefetch API: https://docs.dissect.tools/en/latest/api/dissect/target/plugins/os/windows/prefetch/index.html
+Dissect Database ESE API: https://docs.dissect.tools/en/latest/projects/dissect.database/index.html
+pefile — дополнительные метаданные PE и version resources: https://pypi.org/project/pefile/
+Capstone — статическая дизассемблировка машинных инструкций: https://pypi.org/project/capstone/
+ANSSI dfir-jumplist-parser: https://github.com/ANSSI-FR/dfir-jumplist-parser (beta)
+
+Необязательные библиотеки загружаются только для соответствующей операции. Наличие пакета
+не означает, что конкретная версия формата полностью поддерживается; см. README и BUILD_EXE.

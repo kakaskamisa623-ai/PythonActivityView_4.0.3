@@ -1,0 +1,41 @@
+PYTHON ACTIVITY VIEW 4.0.3 — РЕЗУЛЬТАТЫ ПРОВЕРОК
+================================================
+
+МОДУЛЬНЫЕ ТЕСТЫ
+---------------
+Команда: python -m unittest -v test_pav250.py test_pav300.py test_pav310.py test_pav320.py test_pav330.py test_pav340.py test_pav400.py test_pav401.py test_pav402.py test_pav403.py
+
+Результат: 106 tests, OK.
+- 103 регрессионных теста предыдущей версии 4.0.2.
+- 3 новых теста 4.0.3: чтение активной WAL-базы при открытом writer, сканирование активного
+  браузерного профиля без закрытия браузера, fallback на SQLite Backup API.
+
+ПРОВЕРКА АКТИВНОЙ ИСТОРИИ
+-------------------------
+- Создана синтетическая Chromium History в режиме WAL.
+- Параллельное соединение writer оставалось открытым во время чтения.
+- Read-only транзакция увидела уже зафиксированную запись WAL.
+- Попытка INSERT через reader завершилась SQLITE_READONLY; исходная база не была изменена.
+- Полный browser scanner завершился при активном WAL writer с read_mode=live_readonly.
+- Writer успешно выполнил UPDATE после окончания сканирования.
+- При искусственно недоступном live-read-only пути сработал fallback sqlite_backup.
+
+СТАТИЧЕСКИЕ ПРОВЕРКИ
+--------------------
+- py_compile выполнен для всех .py/.pyw файлов проекта.
+- PythonActivityView.py и PythonActivityView.pyw побайтово совпадают.
+- GUI smoke под Xvfb: окно приложения 4.0.3 создано, вкладка Browser History доступна,
+  основной цикл Tk завершён штатно.
+- ZIP проверен unzip -t.
+- Run_Tests.bat включает test_pav403.py.
+
+ОГРАНИЧЕНИЯ ПРОВЕРКИ
+-------------------
+- Реальные активные профили Chrome/Edge/Firefox на Windows 10/11 в этой среде недоступны.
+- Windows ACL, UAC и собранный PyInstaller --onefile EXE не проверялись.
+- WAL-тест синтетический, выполнен в Linux; он подтверждает работу SQLite read-only/WAL пути,
+  но не заменяет тест реальных браузерных профилей на Windows.
+
+СБОРКА
+------
+Windows EXE не собирался. Для сборки используйте BUILD_EXE.bat на Windows 10/11.

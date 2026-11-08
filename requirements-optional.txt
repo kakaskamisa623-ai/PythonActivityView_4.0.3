@@ -1,0 +1,13 @@
+# Optional parsers. Install only what you need; core GUI does not require these.
+python-evtx>=0.7.4
+python-registry>=1.3.1
+LnkParse3>=1.5.0
+# Larger Dissect packages: install separately when needed for Prefetch / SRUM.
+# dissect.target
+dissect.database
+# DLL/EXE static analysis enhancements (the built-in PE header parser works without these)
+pefile>=2023.2.7
+capstone>=5.0.1
+
+# Unicode PDF report export (uses a locally installed Unicode font)
+reportlab>=4.0.0
